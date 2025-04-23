@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: My Bookizon APIs
+  title: Bookizon Webservice REST API
   version: 1.0.0
 servers:
   - url: https://bookizon.it/webservice
@@ -8,8 +8,7 @@ security:
   - bearerAuth: []
 paths:
   # Users
-  /modulo-crm/users:
-    $ref: './paths/modulo-crm/users.yaml'
+  $ref: './paths/modulo-crm/users.yaml'
 
   # Employees (added later)
   #/modulo-crm/employees:
