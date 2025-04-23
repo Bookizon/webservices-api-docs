@@ -17,9 +17,14 @@ servers:
     description: Production server
 security:
   - bearerAuth: []
+tags:
+  - name: Users
+    description: Operations to manage CRM users
 paths:
   /modulo-crm/users/create:
     post:
+      tags:
+        - Users
       summary: Create a new CRM user
       description: Requires valid bearer token with CREATE_USERS permission
       security:
@@ -45,6 +50,8 @@ paths:
                         $ref: '#/components/schemas/CreateUserData'
   /modulo-crm/users/{user_id}:
     get:
+      tags:
+        - Users
       summary: Get info about a CRM user
       description: Requires valid bearer token with CREATE_USERS permission
       security:
@@ -70,6 +77,8 @@ paths:
                         $ref: '#/components/schemas/ReadUserData'
   /modulo-crm/users/update:
     post:
+      tags:
+        - Users
       summary: Update a CRM user
       description: Requires valid bearer token with CREATE_USERS permission
       security:
@@ -95,6 +104,8 @@ paths:
                         $ref: '#/components/schemas/UpdateUserData'
   /modulo-crm/users/delete:
     post:
+      tags:
+        - Users
       summary: Delete a CRM user
       description: Requires valid bearer token with CREATE_USERS permission
       security:
