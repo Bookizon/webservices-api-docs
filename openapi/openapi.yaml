@@ -12,8 +12,8 @@ paths:
     $ref: './paths/modulo-crm/users.yaml'
 
   # Employees (added later)
-  /modulo-crm/employees:
-    $ref: './paths/modulo-crm/employees.yaml'
+  #/modulo-crm/employees:
+  #  $ref: './paths/modulo-crm/employees.yaml'
 
 components:
   securitySchemes:
