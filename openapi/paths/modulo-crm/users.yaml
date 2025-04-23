@@ -106,9 +106,9 @@ paths:
 components:
   securitySchemes:
     bearerAuth:
+      description: API key auth header 
       type: http
       scheme: bearer
-      bearerFormat: JWT
   schemas:
     FuxResponse:
       type: object
