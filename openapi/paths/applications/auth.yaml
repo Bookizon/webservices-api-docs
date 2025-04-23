@@ -1,0 +1,180 @@
+openapi: 3.0.3
+info:
+  title: Bookizon Webservice API
+  version: 1.0.0
+servers:
+  - url: https://bookizon.it/webservice
+paths:
+  /auth/get-authorization-code:
+    post:
+      summary: Exchange an application API key for an authorization token
+      operationId: getAuthorizationToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAuthorizationCodeRequest'
+      responses:
+        '200':
+          description: Authorization token generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationTokenResponse'
+        '401':
+          description: Unauthorized – invalid application ID or API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/invalidate-access-token:
+    post:
+      summary: Invalidate an application access token
+      operationId: invalidateAccessToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvalidateAccessTokenRequest'
+      responses:
+        '200':
+          description: Access token invalidated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidateAccessTokenResponse'
+        '401':
+          description: Unauthorized – invalid credentials or token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error – failed to invalidate token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/check-access-token:
+    post:
+      summary: Check if an access token is valid
+      operationId: checkAccessToken
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Access token is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAccessTokenResponse'
+        '401':
+          description: Unauthorized – invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    GetAuthorizationCodeRequest:
+      type: object
+      required:
+        - application_id
+        - api_key
+      properties:
+        application_id:
+          type: integer
+          example: 123
+        api_key:
+          type: string
+          example: abcd1234
+        permissions:
+          type: array
+          description: >
+            List of permissions to request. Each item must be one of the allowed permissions.
+          items:
+            type: string
+            enum:
+              - read_users
+              - create_users
+              - update_users
+              - delete_users
+              - contenuti
+              - seat_books
+              - read_service_categories
+              - read_services
+              - read_product_categories
+              - read_products
+              - read_promotions
+          example:
+            - read_users
+            - read_products
+    AuthorizationTokenResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          description: The generated authorization token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        data:
+          nullable: true
+          description: Reserved for response data (null here)
+    InvalidateAccessTokenRequest:
+      type: object
+      required:
+        - application_id
+        - api_key
+        - token
+      properties:
+        application_id:
+          type: integer
+          example: 123
+        api_key:
+          type: string
+          example: abcd1234
+        token:
+          type: string
+          example: efgh5678
+    InvalidateAccessTokenResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Access token invalidated successfully
+        data:
+          nullable: true
+          description: Reserved for response data (null here)
+    CheckAccessTokenResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          nullable: true
+          type: string
+        data:
+          nullable: true
+          type: object
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Unauthorized access
