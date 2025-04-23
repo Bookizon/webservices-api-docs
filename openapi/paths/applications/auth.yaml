@@ -11,9 +11,9 @@ info:
 
     Follow these steps in order to get an access token to be used as Bearer token for subsequent API calls
     
-    1. Use the application api_key (generated on the Bookizon developer portal) to generate an authorization code and redirect the user (the business owner) to the /authorize endpoint
-    2. If the user is already logged into the Bookizon dashboard an authorization page is showed, otherwise a login operation is requested before displaying the authorization page
-    3. After the user authorize your application it is redirected to your callback URL along with the accessToken query string parameter
+    1) Use the application api_key (generated on the Bookizon developer portal) to generate an authorization code and redirect the user (the business owner) to the /authorize endpoint
+    2) If the user is already logged into the Bookizon dashboard an authorization page is showed, otherwise a login operation is requested before displaying the authorization page
+    3) After the user authorize your application it is redirected to your callback URL along with the accessToken query string parameter
 
     You can store securely the access token and use it as bearer token for your next API requests
     
