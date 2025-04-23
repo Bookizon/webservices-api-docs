@@ -1,0 +1,329 @@
+openapi: 3.0.4
+info:
+  title: CRM Users API
+  version: 1.0.0
+  description: API for managing CRM users
+servers:
+  - url: https://bookizon.it/webservice
+    description: Production server
+security:
+  - bearerAuth: []
+paths:
+  /modulo-crm/users/create:
+    post:
+      summary: Create a new CRM user
+      description: Requires valid bearer token with CREATE_USERS permission
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '200':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/FuxResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CreateUserData'
+  /modulo-crm/users/{user_id}:
+    get:
+      summary: Get info about a CRM user
+      description: Requires valid bearer token with CREATE_USERS permission
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: CRM user info
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/FuxResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ReadUserData'
+  /modulo-crm/users/update:
+    post:
+      summary: Update a CRM user
+      description: Requires valid bearer token with CREATE_USERS permission
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/FuxResponse'
+                  - type: object
+                    required: [data]
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UpdateUserData'
+  /modulo-crm/users/delete:
+    post:
+      summary: Delete a CRM user
+      description: Requires valid bearer token with CREATE_USERS permission
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUserRequest'
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FuxResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    FuxResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - ERROR
+            - CONFIRM
+        message:
+          type: string
+          nullable: true
+        data:
+          type: object
+          nullable: true
+          description: Response payload
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - phone
+      oneOf:
+        - required: [ first_name ]
+        - required: [ last_name ]
+      properties:
+        first_name:
+          type: string
+          description: >
+            The user's first name.  
+            At least one of `first_name` or `last_name` must be provided.
+          example: John
+        last_name:
+          type: string
+          description: >
+            The user's last name.  
+            At least one of `first_name` or `last_name` must be provided.
+          example: Doe
+        email:
+          type: string
+          format: email
+          description: The user's email address (must be valid).
+          example: user@example.com
+        phone:
+          type: string
+          description: >
+            The user's phone number, in E.164 format if possible.
+          example: "+393491234567"
+        phone_country_code:
+          type: string
+          description: >
+            (Optional) ISO 3166-1 alpha-2 country code  
+            used to parse local numbers.
+          example: IT
+        birthday_date:
+          type: string
+          format: date
+          description: Date of birth in `YYYY-MM-DD` format.
+          example: "1990-01-01"
+        gender:
+          type: integer
+          enum: [ 1, 0, -1 ]
+          description: |
+            1 = male  
+            0 = unspecified  
+            -1 = female
+        pipeline_column_ids_csv:
+          type: string
+          description: Comma-separated list of pipeline column IDs; should not be set if `pipeline_column_ids` is.
+          example: "1,2,3"
+        pipeline_column_ids:
+          type: array
+          items:
+            type: integer
+          description: Array of pipeline column IDs; should not be set if `pipeline_column_ids_csv` is.
+          example: [ 1, 2, 3 ]
+        tag_ids_csv:
+          type: string
+          description: Comma-separated list of tag IDs; should not be set if `tag_ids` is.
+          example: "4,5,6"
+        tag_ids:
+          type: array
+          items:
+            type: integer
+          description: Array of tag IDs; should not be set if `tag_ids_csv` is.
+          example: [ 4, 5, 6 ]
+    UpdateUserRequest:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: integer
+          example: 123
+        first_name:
+          type: string
+          example: Jane
+        last_name:
+          type: string
+          example: Smith
+        email:
+          type: string
+          format: email
+          example: jane.smith@example.com
+        phone:
+          type: string
+          example: "+393491234568"
+        phone_country_code:
+          type: string
+          example: IT
+        birthday_date:
+          type: string
+          format: date
+          example: "1985-05-20"
+        gender:
+          type: integer
+          enum: [1, 0, -1]
+    DeleteUserRequest:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: integer
+          example: 123
+    CreateUserData:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: integer
+          example: 123
+    ReadUserData:
+      type: object
+      required:
+        - user_id
+        - type
+        - first_name
+        - last_name
+        - email
+        - phone
+        - optins
+      properties:
+        user_id:
+          type: integer
+          example: 123
+        type:
+          type: string
+          example: CRM
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        email:
+          type: string
+          example: john.doe@example.com
+        phone:
+          type: string
+          example: "+393491234567"
+        optins:
+          $ref: '#/components/schemas/OptIns'
+    UpdateUserData:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: integer
+          example: 123
+    OptIns:
+      type: object
+      properties:
+        marketing_push_notifications:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        marketing_sms:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        marketing_whatsapp:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        marketing_email:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        reminder_push_notifications:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        reminder_sms:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        reminder_whatsapp:
+          type: integer
+          enum: [0, 1]
+          example: 1
+        reminder_email:
+          type: integer
+          enum: [0, 1]
+          example: 1
+      required:
+        - marketing_push_notifications
+        - marketing_sms
+        - marketing_whatsapp
+        - marketing_email
+        - reminder_push_notifications
+        - reminder_sms
+        - reminder_whatsapp
+        - reminder_email
