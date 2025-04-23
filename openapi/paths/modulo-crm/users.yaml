@@ -1,8 +1,17 @@
 openapi: 3.0.4
 info:
-  title: CRM Users API
+  title: Bookizon CRM Users API
   version: 1.0.0
-  description: API for managing CRM users
+  description: >
+    # Introduction
+    
+    This page shows all possible API endopoint for managing CRM users in a Bookizon business account
+    
+    # Authentication
+  
+    The authetication is granted by a Bearer token that should be inserted in the Authorization HTTP header. 
+    It can be generated manually inside the Bookizon admin dashboard by each business owner account or can be generate via API calls with the help of an application authorization link.
+
 servers:
   - url: https://bookizon.it/webservice
     description: Production server
