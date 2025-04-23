@@ -9,7 +9,7 @@ info:
     
     # The authorization flow
 
-    The basic authorization flow is the following:
+    Follow these steps in order to get an access token to be used as Bearer token for subsequent API calls
     
     1. Use the application api_key (generated on the Bookizon developer portal) to generate an authorization code and redirect the user (the business owner) to the /authorize endpoint
     2. If the user is already logged into the Bookizon dashboard an authorization page is showed, otherwise a login operation is requested before displaying the authorization page
