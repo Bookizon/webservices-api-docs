@@ -1,0 +1,20 @@
+# openapi/components/schemas/FuxResponse.yaml
+type: object
+required:
+  - status
+properties:
+  status:
+    type: string
+    description: Result status
+    enum:
+      - OK
+      - ERROR
+      - CONFIRM
+  message:
+    type: string
+    nullable: true
+    description: Human-readable message
+  data:
+    type: object
+    nullable: true
+    description: Payload of the response

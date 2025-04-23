@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: My Bookizon APIs
+  version: 1.0.0
+servers:
+  - url: https://bookizon.it/webservice
+security:
+  - bearerAuth: []
+paths:
+  # Users
+  /modulo-crm/users:
+    $ref: './paths/modulo-crm/users.yaml'
+
+  # Employees (added later)
+  /modulo-crm/employees:
+    $ref: './paths/modulo-crm/employees.yaml'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    FuxResponse:
+      $ref: './components/schemas/FuxResponse.yaml'
