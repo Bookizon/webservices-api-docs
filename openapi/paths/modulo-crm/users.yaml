@@ -126,7 +126,7 @@ paths:
 components:
   securitySchemes:
     bearerAuth:
-      description: API key auth header 
+      description: API key auth header
       type: http
       scheme: bearer
   schemas:
@@ -197,6 +197,34 @@ components:
             1 = male  
             0 = unspecified  
             -1 = female
+        optins:
+          type: object
+          properties:
+            marketing_whatsapp:
+              type: integer
+              enum: [ 1, 0 ]
+              description: 1 if enabled, 0 if not enabled
+            marketing_email:
+              type: integer
+              enum: [ 1, 0 ]
+              description: 1 if enabled, 0 if not enabled
+            marketing_sms:
+              type: integer
+              enum: [ 1, 0 ]
+              description: 1 if enabled, 0 if not enabled
+            reminder_whatsapp:
+              type: integer
+              enum: [ 1, 0 ]
+              description: 1 if enabled, 0 if not enabled
+            reminder_email:
+              type: integer
+              enum: [ 1, 0 ]
+              description: 1 if enabled, 0 if not enabled
+            reminder_sms:
+              type: integer
+              enum: [ 1, 0 ]
+              description: 1 if enabled, 0 if not enabled
+
         pipeline_column_ids_csv:
           type: string
           description: Comma-separated list of pipeline column IDs; should not be set if `pipeline_column_ids` is.
